@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,18 +11,34 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    class BaseObject
+    abstract class BaseObject:ICollision
     {
-        protected Point Pos;
-        protected Point Dir;
-        protected Size Size;
+        public Point Pos;
+        public Point Dir;
+        public Size Size;
 
         public BaseObject(Point pos, Point dir, Size size)
         {
             Pos = pos;
             Dir = dir;
             Size = size;
+           
+            try
+            {
+                if (dir.X > 10 || dir.Y > 10)
+                throw new MyException("Превышение максимальной скорости");
+            }
+            catch (MyException)
+            {
+                Dir.X = 10;
+                Dir.Y = 10;
+
+            }
         }
+
+        public Rectangle Rect => new Rectangle(Pos, Size);
+
+        public bool Collision(ICollision o) => o.Rect.IntersectsWith(this.Rect);
 
         //Рисуем метеорит
         public virtual void Draw()
@@ -29,16 +46,9 @@ namespace MyGame
             Game.Buffer.Graphics.DrawImage(Game.newImage, Pos.X, Pos.Y);
         }
 
-       // Задаем траекторию полета
-        public virtual void Update()
-        {
-            Pos.X = Pos.X + Dir.X;
-            Pos.Y = Pos.Y + Dir.Y;
-            if (Pos.X < 0) Dir.X = -Dir.X;
-            if (Pos.X > Game.Width) Dir.X = -Dir.X;
-            if (Pos.Y < 0) Dir.Y = -Dir.Y;
-            if (Pos.Y > Game.Height) Dir.Y = -Dir.Y;
-        }
+        // Задаем траекторию полета
+        public abstract void Update();
+      
 
     }
 
