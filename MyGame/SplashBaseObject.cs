@@ -7,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    //Объекты для заставки
     class SplashBaseObject
     {
         protected Point Pos;
         protected Point Dir;
         protected Size Size;
 
+        /// <summary>
+        /// Объекты для заставки
+        /// </summary>
+        /// <param name="pos">Позиция</param>
+        /// <param name="dir">Смещение</param>
+        /// <param name="size">Размер</param>
         public SplashBaseObject(Point pos, Point dir, Size size)
         {
             Pos = pos;
@@ -21,14 +26,18 @@ namespace MyGame
             Size = size;
         }
 
-        // Рисуем сзвездочки
+        /// <summary>
+        /// Рисуем сзвездочки
+        /// </summary>
         public virtual void Draw()
         {
             SplashScreen.Buffer.Graphics.DrawLine(Pens.Aqua, Pos.X, Pos.Y, Pos.X + Size.Width, Pos.Y + Size.Height);
             SplashScreen.Buffer.Graphics.DrawLine(Pens.Aqua, Pos.X + Size.Width, Pos.Y, Pos.X, Pos.Y + Size.Height);
         }
 
-        //Звездочки должны раззлетаться по окружности
+        /// <summary>
+        /// Звездочки должны раззлетаться по окружности
+        /// </summary>
         public virtual void Update()
         {
             Pos.X = Pos.X + Dir.X;

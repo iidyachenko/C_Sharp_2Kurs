@@ -11,42 +11,61 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
+    /// <summary>
+    /// Абстрактный класс, основа всех графических объектов
+    /// </summary>
     abstract class BaseObject:ICollision
     {
         public Point Pos;
         public Point Dir;
         public Size Size;
 
+        /// <summary>
+        /// Конструктор объектов
+        /// </summary>
+        /// <param name="pos">Позиция</param>
+        /// <param name="dir">Смещение</param>
+        /// <param name="size">Размер</param>
         public BaseObject(Point pos, Point dir, Size size)
         {
             Pos = pos;
             Dir = dir;
             Size = size;
-           
+
+            //Проверка на максимально допустимую скорость объекта
             try
             {
-                if (dir.X > 10 || dir.Y > 10)
+                if (dir.X > 25 || dir.Y > 25)
                 throw new MyException("Превышение максимальной скорости");
             }
             catch (MyException)
             {
-                Dir.X = 10;
-                Dir.Y = 10;
+                Dir.X = 15;
+                Dir.Y = 15;
 
             }
         }
 
         public Rectangle Rect => new Rectangle(Pos, Size);
 
+        /// <summary>
+        /// Расчет столкновения
+        /// </summary>
+        /// <param name="o">объект столкновения</param>
+        /// <returns></returns>
         public bool Collision(ICollision o) => o.Rect.IntersectsWith(this.Rect);
 
-        //Рисуем метеорит
+        /// <summary>
+        /// Рисуем объект
+        /// </summary>
         public virtual void Draw()
         {
             Game.Buffer.Graphics.DrawImage(Game.newImage, Pos.X, Pos.Y);
         }
 
-        // Задаем траекторию полета
+        /// <summary>
+        /// Задаем траекторию полета
+        /// </summary>
         public abstract void Update();
       
 

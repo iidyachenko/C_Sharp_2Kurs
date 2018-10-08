@@ -93,7 +93,7 @@ namespace MyGame
             _asteroids = new Asteroid[8];
             for (var i = 0; i < _asteroids.Length; i++)
             {
-                int r = rnd.Next(20, 50);
+                int r = rnd.Next(5, 30);
                 _asteroids[i] = new Asteroid(new Point(1000, rnd.Next(0, Game.Height)), new Point(-r / 5, r), new Size(40, 40));
             }
 
@@ -120,7 +120,10 @@ namespace MyGame
             Buffer.Render();
         }
 
-        // двигаем объекты
+        /// <summary>
+        /// двигаем объекты
+        /// </summary>
+        /// <param name="objs">Массив объектов</param>
         public static void Update(BaseObject[] objs)
         {
             foreach (BaseObject obj in _asteroids)

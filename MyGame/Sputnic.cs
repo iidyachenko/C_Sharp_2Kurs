@@ -7,13 +7,19 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
+    /// <summary>
+    /// Конструктор спутника
+    /// </summary>
     class Sputnic:BaseObject
     {
         public Sputnic(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
 
         }
-//Рисуем спутник ввиде элепса и линий(антен)
+
+        /// <summary>
+        /// Рисуем спутник ввиде элепса и линий(антен)
+        /// </summary>
         public override void Draw()
         {
             Game.Buffer.Graphics.FillEllipse(Brushes.Wheat, Pos.X, Pos.Y, Size.Width, Size.Height);
@@ -23,6 +29,9 @@ namespace MyGame
             Game.Buffer.Render();
         }
 
+        /// <summary>
+        /// Двигаем спутник по диагонали, если пропадет в вверху - появится внизу
+        /// </summary>
         public override void Update()
         {
             Pos.X = Pos.X - Dir.X;

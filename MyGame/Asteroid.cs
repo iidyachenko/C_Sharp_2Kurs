@@ -8,19 +8,33 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
+    /// <summary>
+    /// Класс астероидов
+    /// </summary>
     class Asteroid : BaseObject
     {
-      
+      /// <summary>
+      /// Создаем астероиды
+      /// </summary>
+      /// <param name="pos">Позиция</param>
+      /// <param name="dir">Смещение</param>
+      /// <param name="size">Размер</param>
         public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
 
         }
 
+        /// <summary>
+        /// Рисуем астероиды
+        /// </summary>
         public override void Draw()
         {
             Game.Buffer.Graphics.DrawImage(Game.newImage, Pos.X, Pos.Y);
         }
 
+        /// <summary>
+        /// Двигаем астероиды
+        /// </summary>
         public override void Update()
         {
             {
