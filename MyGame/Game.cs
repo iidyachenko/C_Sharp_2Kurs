@@ -21,11 +21,13 @@ namespace MyGame
         public static int Width { get; set; }
         public static int Height { get; set; }
         public static Image newImage = Image.FromFile(@"Images\Meteor.png");
+        public static Image N5 = Image.FromFile(@"Images\N5.PNG");
         public static BaseObject[] _objs;
         public static Star[] _star;
         public static Sputnic s;
         private static Bullet _bullet;
         private static Asteroid[] _asteroids;
+        private static Ship _ship;
 
         static Game()
         {
@@ -52,7 +54,9 @@ namespace MyGame
             Width = form.Width;
             Height = form.Height;
 
-           
+            //Вызов обработчика события нажатия клавиши
+            form.KeyDown += Form_KeyDown;
+
             // Связываем буфер в памяти с графическим объектом, чтобы рисовать в буфере
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
 
@@ -88,7 +92,7 @@ namespace MyGame
             _objs = new BaseObject[5];
             _star = new Star[30];
 
-            _bullet = new Bullet(new Point(0, 200), new Point(25, 0), new Size(4, 1));
+            _bullet = new Bullet(new Point(0, 300), new Point(25, 0), new Size(4, 1));
 
             _asteroids = new Asteroid[8];
             for (var i = 0; i < _asteroids.Length; i++)
@@ -106,7 +110,10 @@ namespace MyGame
 
             //Создаем спутник
             s = new Sputnic(new Point(100, 100), new Point(10, 10), new Size(20, 20));
-        }
+                 //Создаем Корабль
+
+            _ship = new Ship(new Point(10, 300), new Point(5, 5), new Size(10, 10));
+    }
 
         /// <summary>
         /// Метод для рисования массива объектов
@@ -146,7 +153,7 @@ namespace MyGame
         private static void Timer_Tick(object sender, EventArgs e)
         {
             Clear();
-           
+            _ship.Draw();
             Draw(_asteroids);
             Draw(_star);
             _bullet.Draw();
@@ -163,6 +170,21 @@ namespace MyGame
         {
             //Если нужно чтобы форма не закрывалась:
             e.Cancel = false;
+        }
+
+        /// <summary>
+        /// Обработка нажатия клавиш для управления кораблем
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                _bullet = new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 4), new Point(25, 0), new Size(4, 1));
+            }
+            if (e.KeyCode == Keys.Up) _ship.Up();
+            if (e.KeyCode == Keys.Down) _ship.Down();
         }
     }
 }

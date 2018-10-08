@@ -25,6 +25,7 @@ namespace MyGame
         public override void Draw()
         {
             Game.Buffer.Graphics.DrawRectangle(Pens.OrangeRed, Pos.X, Pos.Y, Size.Width, Size.Height);
+            
         }
 
         /// <summary>
