@@ -28,6 +28,8 @@ namespace MyGame
         private static Bullet _bullet;
         private static Asteroid[] _asteroids;
         private static Ship _ship;
+        public static int FormGameOpen;
+
 
         static Game()
         {
@@ -152,17 +154,19 @@ namespace MyGame
 
         private static void Timer_Tick(object sender, EventArgs e)
         {
-            Clear();
-            _ship.Draw();
-            Draw(_asteroids);
-            Draw(_star);
-            _bullet.Draw();
-            Update(_asteroids);
-            Update(_star);
-            _bullet.Update();
-            s.Draw();
-            s.Update();
-            
+            if (FormGameOpen == 1)
+            {
+                Clear();
+                _ship.Draw();
+                Draw(_asteroids);
+                Draw(_star);
+                _bullet.Draw();
+                Update(_asteroids);
+                Update(_star);
+                _bullet.Update();
+                s.Draw();
+                s.Update();
+            }
         }
 
 

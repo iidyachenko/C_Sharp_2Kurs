@@ -12,10 +12,12 @@ namespace MyGame
     {
         static void Main(string[] args)
         {
-            // Запуск стартовой формы
-            Form1 form1 = new Form1();
+          
+        // Запуск стартовой формы
+        Form1 form1 = new Form1();
             SplashScreen.Init(form1);
-            form1.ShowDialog();
+            Application.Run(form1);
+
         }
     }
 }

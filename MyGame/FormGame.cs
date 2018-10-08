@@ -12,6 +12,7 @@ namespace MyGame
 {
     public partial class FormGame : Form
     {
+        
         public FormGame()
         {
             FormClosing += FormGame_FormClosing;
@@ -22,7 +23,11 @@ namespace MyGame
         {
             e.Cancel = MessageBox.Show("Хотите закрыть окно?", "Закрытие окна", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No;
             if (e.Cancel == false)
-            { Environment.Exit(0); }
+            {
+                e.Cancel = false;
+                Game.FormGameOpen = 0;
+                Game.Buffer.Dispose();
+            }
         }
     }
 }
