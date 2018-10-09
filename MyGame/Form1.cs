@@ -22,14 +22,15 @@ namespace MyGame
 
         private void button1_Click(object sender, EventArgs e)
         {
+ 
             Form form = new FormGame();
             form.Width = 1000;
             form.Height = 600;
-            Game.FormGameOpen = 1;
+            Game.NewGameClear();
             Game.Init(form);
-            form.Show();
-            //this.Close();
-            
+            form.ShowDialog();
+            Application.Restart();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -37,10 +38,11 @@ namespace MyGame
      
         }
 
-        //private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        //{
-        //    e.Cancel = MessageBox.Show("Хотите закрыть окно?", "Закрытие окна", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No;
-        //}
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //e.Cancel = MessageBox.Show("Хотите закрыть окно?", "Закрытие окна", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No;
+           // Application.Restart();
+        }
 
         private void button3_Click(object sender, EventArgs e)
         {

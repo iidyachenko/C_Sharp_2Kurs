@@ -14,8 +14,8 @@ namespace MyGame
         {
           
         // Запуск стартовой формы
-        Form1 form1 = new Form1();
-            SplashScreen.Init(form1);
+            Form1 form1 = new Form1();           
+            SplashScreen.Init(form1);             
             Application.Run(form1);
 
         }

@@ -44,7 +44,10 @@ namespace MyGame
 
         public void Die()
         {
+            MessageDie?.Invoke();
         }
+
+        public static event Message MessageDie;
     }
 
 }

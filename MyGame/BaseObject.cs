@@ -11,15 +11,18 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
+    
     /// <summary>
     /// Абстрактный класс, основа всех графических объектов
     /// </summary>
     abstract class BaseObject:ICollision
     {
+        public delegate void Message();
+
         public Point Pos;
         public Point Dir;
         public Size Size;
-
+       
         /// <summary>
         /// Конструктор объектов
         /// </summary>

@@ -21,12 +21,12 @@ namespace MyGame
 
         private void FormGame_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = MessageBox.Show("Хотите закрыть окно?", "Закрытие окна", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No;
+           /// e.Cancel = MessageBox.Show("Хотите закрыть окно?", "Закрытие окна", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No;
             if (e.Cancel == false)
             {
-                e.Cancel = false;
-                Game.FormGameOpen = 0;
+
                 Game.Buffer.Dispose();
+                Game._timer.Stop();
             }
         }
     }

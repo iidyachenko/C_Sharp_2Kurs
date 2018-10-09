@@ -28,7 +28,8 @@ namespace MyGame
         private static Bullet _bullet;
         private static Asteroid[] _asteroids;
         private static Ship _ship;
-        public static int FormGameOpen;
+        public static Timer _timer = new Timer { Interval = 100 };
+        public static int score = 0;
 
 
         static Game()
@@ -68,10 +69,10 @@ namespace MyGame
             //Начальное состояние - пустой черный экран
             Clear();
 
-            Timer timer = new Timer { Interval = 100 };
-            timer.Start();
-            timer.Tick += Timer_Tick;
+            _timer.Start();
+            _timer.Tick += Timer_Tick;
 
+            Ship.MessageDie += Finish;
         }
 
         /// <summary>
@@ -80,6 +81,7 @@ namespace MyGame
         public static void Clear()
         {
             Buffer.Graphics.Clear(Color.FromArgb(0, 0, 64));
+            Buffer.Graphics.DrawString("Score:" + score, SystemFonts.StatusFont, Brushes.White, 200, 0);
             Buffer.Render();
         }
 
@@ -143,7 +145,19 @@ namespace MyGame
                     System.Media.SystemSounds.Hand.Play();
                     obj.Pos.X = Game.Width;
                     _bullet.Pos.X = 0;
+                    score++;
                 }
+
+                if (obj.Collision(_ship))
+                {
+                    System.Media.SystemSounds.Asterisk.Play();
+                    var rnd = new Random();
+                    _ship?.EnergyLow(rnd.Next(10, 50));
+                    obj.Pos.X = Game.Width;
+                    _bullet.Pos.X = 0;
+                    if (_ship.Energy <= 0) _ship?.Die();
+                }
+
             }
 
             foreach (BaseObject obj in _star)
@@ -154,8 +168,7 @@ namespace MyGame
 
         private static void Timer_Tick(object sender, EventArgs e)
         {
-            if (FormGameOpen == 1)
-            {
+
                 Clear();
                 _ship.Draw();
                 Draw(_asteroids);
@@ -166,7 +179,6 @@ namespace MyGame
                 _bullet.Update();
                 s.Draw();
                 s.Update();
-            }
         }
 
 
@@ -189,6 +201,24 @@ namespace MyGame
             }
             if (e.KeyCode == Keys.Up) _ship.Up();
             if (e.KeyCode == Keys.Down) _ship.Down();
+        }
+
+        public static void NewGameClear()
+        {
+            if (_bullet != null)
+            {
+                _bullet.Pos.X = 0;
+                _bullet.Pos.Y = 0;
+                _bullet.Dir.X = 0;
+                _bullet.Dir.Y = 0;
+            }
+        }
+
+        public static void Finish()
+        {
+            _timer.Stop();
+            Buffer.Graphics.DrawString("The End", new Font(FontFamily.GenericSansSerif, 60, FontStyle.Underline), Brushes.White, 200, 100);
+            Buffer.Render();
         }
     }
 }
