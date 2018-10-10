@@ -25,8 +25,9 @@ namespace MyGame
         /// </summary>
         public override void Draw()
         {
-            Game.Buffer.Graphics.DrawLine(Pens.Red, Pos.X, Pos.Y, Pos.X + Size.Width, Pos.Y + Size.Height);
-            Game.Buffer.Graphics.DrawLine(Pens.Red, Pos.X + Size.Width, Pos.Y, Pos.X, Pos.Y + Size.Height);
+            Game.Buffer.Graphics.DrawImage(Game.Battery, Pos.X, Pos.Y);
+
+
         }
 
         /// <summary>
@@ -34,8 +35,13 @@ namespace MyGame
         /// </summary>
         public override void Update()
         {
+            Random r = new Random();
             Pos.X = Pos.X - Dir.X;
-            if (Pos.X < 0) Pos.X = Game.Width + Size.Width;
+            if (Pos.X < 0)
+            {
+                Pos.X = Game.Width;
+                Pos.Y = r.Next(2, 600);
+            }
         }
     }
 }

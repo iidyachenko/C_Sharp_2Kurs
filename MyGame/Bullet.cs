@@ -34,7 +34,7 @@ namespace MyGame
         public override void Update()
         {
             Pos.X = Pos.X + Dir.X;
-            if (Pos.X > Game.Width) Pos.X = 0;
+            if (Pos.X > Game.Width) Game._log -= Game.Bullet_in_fly; ;
         }
 
     }

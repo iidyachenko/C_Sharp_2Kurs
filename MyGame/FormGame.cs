@@ -12,7 +12,7 @@ namespace MyGame
 {
     public partial class FormGame : Form
     {
-        
+
         public FormGame()
         {
             FormClosing += FormGame_FormClosing;
@@ -28,6 +28,18 @@ namespace MyGame
                 Game.Buffer.Dispose();
                 Game._timer.Stop();
             }
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // FormGame
+            // 
+            this.ClientSize = new System.Drawing.Size(282, 253);
+            this.Name = "FormGame";
+            this.ResumeLayout(false);
+
         }
     }
 }

@@ -17,6 +17,11 @@ namespace MyGame
             _energy -= n;
         }
 
+        public void EnergyHigh(int n)
+        {
+            _energy += n;
+        }
+
         public Ship(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
         }

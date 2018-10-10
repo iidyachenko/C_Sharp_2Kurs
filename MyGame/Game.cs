@@ -22,6 +22,7 @@ namespace MyGame
         public static int Height { get; set; }
         public static Image newImage = Image.FromFile(@"Images\Meteor.png");
         public static Image N5 = Image.FromFile(@"Images\N5.PNG");
+        public static Image Battery = Image.FromFile(@"Images\battery.PNG");
         public static BaseObject[] _objs;
         public static Star[] _star;
         public static Sputnic s;
@@ -30,6 +31,8 @@ namespace MyGame
         private static Ship _ship;
         public static Timer _timer = new Timer { Interval = 100 };
         public static int score = 0;
+        public static Medkit _medkit;
+        public static event Action<string> _log;
 
 
         static Game()
@@ -73,6 +76,7 @@ namespace MyGame
             _timer.Tick += Timer_Tick;
 
             Ship.MessageDie += Finish;
+            _log += stat;
         }
 
         /// <summary>
@@ -96,12 +100,13 @@ namespace MyGame
             _objs = new BaseObject[5];
             _star = new Star[30];
 
-            _bullet = new Bullet(new Point(0, 300), new Point(25, 0), new Size(4, 1));
+            _bullet = new Bullet(new Point(0, 300), new Point(50, 0), new Size(10, 2));
+            _log += Bullet_in_fly;
 
             _asteroids = new Asteroid[8];
             for (var i = 0; i < _asteroids.Length; i++)
             {
-                int r = rnd.Next(5, 30);
+                int r = rnd.Next(5, 10);
                 _asteroids[i] = new Asteroid(new Point(1000, rnd.Next(0, Game.Height)), new Point(-r / 5, r), new Size(40, 40));
             }
 
@@ -116,7 +121,11 @@ namespace MyGame
             s = new Sputnic(new Point(100, 100), new Point(10, 10), new Size(20, 20));
                  //Создаем Корабль
 
-            _ship = new Ship(new Point(10, 300), new Point(5, 5), new Size(10, 10));
+            _ship = new Ship(new Point(10, 300), new Point(5, 5), new Size(30, 10));
+
+            _medkit = new Medkit(new Point(Game.Width, rnd.Next(0, 600)), new Point(10, 0), new Size(20, 20));
+
+            
     }
 
         /// <summary>
@@ -146,7 +155,9 @@ namespace MyGame
                     obj.Pos.X = Game.Width;
                     _bullet.Pos.X = 0;
                     score++;
+                    _log += Hit;
                 }
+                
 
                 if (obj.Collision(_ship))
                 {
@@ -154,10 +165,18 @@ namespace MyGame
                     var rnd = new Random();
                     _ship?.EnergyLow(rnd.Next(10, 50));
                     obj.Pos.X = Game.Width;
-                    _bullet.Pos.X = 0;
+                    _bullet.Pos.X = Game.Width;
+                    _log += ShipHit;
                     if (_ship.Energy <= 0) _ship?.Die();
                 }
 
+            }
+
+            if (_medkit.Collision(_ship))
+            {
+                System.Media.SystemSounds.Exclamation.Play();
+                _ship?.EnergyHigh(25);
+                _medkit.Pos.X = Game.Width;
             }
 
             foreach (BaseObject obj in _star)
@@ -170,15 +189,20 @@ namespace MyGame
         {
 
                 Clear();
+                _medkit.Draw();              
                 _ship.Draw();
                 Draw(_asteroids);
                 Draw(_star);
-                _bullet.Draw();
+                _bullet?.Draw();
                 Update(_asteroids);
                 Update(_star);
                 _bullet.Update();
                 s.Draw();
                 s.Update();
+                _medkit.Update();
+            _log("Статус");
+            _log -= Hit;
+            _log -= ShipHit;
         }
 
 
@@ -197,10 +221,13 @@ namespace MyGame
         {
             if (e.KeyCode == Keys.Space)
             {
-                _bullet = new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 4), new Point(25, 0), new Size(4, 1));
+                _bullet = new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 4), new Point(45, 0), new Size(10, 1));
+                _log += Bullet_in_fly;
             }
             if (e.KeyCode == Keys.Up) _ship.Up();
             if (e.KeyCode == Keys.Down) _ship.Down();
+            if (e.KeyCode == Keys.P) _timer.Stop();
+            if (e.KeyCode == Keys.Enter) _timer.Start();
         }
 
         public static void NewGameClear()
@@ -219,6 +246,26 @@ namespace MyGame
             _timer.Stop();
             Buffer.Graphics.DrawString("The End", new Font(FontFamily.GenericSansSerif, 60, FontStyle.Underline), Brushes.White, 200, 100);
             Buffer.Render();
+        }
+
+        public static void stat(string message)
+        {
+            Console.WriteLine(DateTime.Now + " " + message + " энергия корабля: " + _ship.Energy);
+        }
+
+        public static void Hit(string message)
+        {
+            Console.WriteLine(DateTime.Now + " " + message + " Взорвали астероид: " + score);
+        }
+
+        public static void Bullet_in_fly(string message)
+        {
+            Console.WriteLine(DateTime.Now + "Пуля в полете");
+        }
+
+        public static void ShipHit(string message)
+        {
+            Console.WriteLine(DateTime.Now + " В корабль попали энергия корабля: " + _ship.Energy);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace MyGame
             //Проверка на максимально допустимую скорость объекта
             try
             {
-                if (dir.X > 25 || dir.Y > 25)
+                if (dir.X > 50 || dir.Y > 50)
                 throw new MyException("Превышение максимальной скорости");
             }
             catch (MyException)
