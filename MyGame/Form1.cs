@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace MyGame
             Game.NewGameClear();
             Game.Init(form);
             form.ShowDialog();
-            Application.Restart();
+            //Application.Restart();
 
         }
 
@@ -49,6 +50,13 @@ namespace MyGame
             bool ExitFlag = MessageBox.Show("Хотите закрыть окно?", "Закрытие окна", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No;
             if (ExitFlag == false)
             { Environment.Exit(0); }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            StreamReader recR = new StreamReader("Record.txt");
+            MessageBox.Show("Текущий рекорд в игре: "+ recR.ReadLine());
+            recR.Close();
         }
     }
 }

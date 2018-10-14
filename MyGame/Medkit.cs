@@ -42,6 +42,7 @@ namespace MyGame
                 Pos.X = Game.Width;
                 Pos.Y = r.Next(2, 600);
             }
+
         }
     }
 }
