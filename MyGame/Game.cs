@@ -39,7 +39,7 @@ namespace MyGame
         private static List<Bullet> _bullets = new List<Bullet>();
         private static List<Asteroid> _lasteroids = new List<Asteroid>();
         public static Random rnd = new Random();
-        public static StreamWriter sw = new StreamWriter("Log.txt");
+        public static StreamWriter sw ;
         public static StreamReader recR;
         public static StreamWriter recW;
 
@@ -56,7 +56,10 @@ namespace MyGame
         {
             // Графическое устройство для вывода графики
             Graphics g;
-
+            AsterCount = 2;
+            score = 0;
+            _lasteroids.Clear();
+            mspeed = 15;
             // Предоставляем доступ к главному буферу графического контекста для текущего приложения
             _context = BufferedGraphicsManager.Current;
             g = form.CreateGraphics();
@@ -85,8 +88,9 @@ namespace MyGame
             _timer.Tick += Timer_Tick;
 
             Ship.MessageDie += Finish;
- //           _log += stat;
+            //           _log += stat;
 
+            sw = new StreamWriter("Log.txt");
             sw.WriteLine("Начало записи лога");
 
             recR = new StreamReader("Record.txt");

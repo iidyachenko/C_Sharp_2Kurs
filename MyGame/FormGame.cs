@@ -33,6 +33,7 @@ namespace MyGame
                 Game.recW = new StreamWriter("Record.txt");
                 Game.recW.WriteLine(Game.CurRec);
                 Game.recW.Close();
+                
             }
         }
 
