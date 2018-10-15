@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lesson4_Collection_and_LINQ
 {
@@ -57,7 +58,6 @@ namespace Lesson4_Collection_and_LINQ
                         {
                             found.Add(val, 0);
                             found[val]++;
-
                         }
                         else found[val]++;  
                         }
@@ -108,6 +108,11 @@ namespace Lesson4_Collection_and_LINQ
                 Console.WriteLine(pair.Key + " " + pair.Value);
             };
 
+            Console.WriteLine("Количество повторений использование LINQ");
+            ilist.GroupBy(x => x)
+                .OrderBy(x => x.Count())
+                .ToList()
+                .ForEach(x => Console.WriteLine("Key: {0}, Count: {1}", x.Key, x.Count()));
 
             Console.ReadKey();
         }
