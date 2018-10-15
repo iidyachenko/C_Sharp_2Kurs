@@ -308,6 +308,9 @@ namespace MyGame
             }
         }
 
+        /// <summary>
+        /// Вызывается при завершении игры
+        /// </summary>
         public static void Finish()
         {
             _timer.Stop();
@@ -315,18 +318,30 @@ namespace MyGame
             Buffer.Render();
         }
 
+        /// <summary>
+        /// Сбор статистики
+        /// </summary>
+        /// <param name="message"></param>
         public static void stat(string message)
         {
             Console.WriteLine(DateTime.Now + " " + message + " энергия корабля: " + _ship.Energy);
             sw.WriteLine(DateTime.Now + " " + message + " энергия корабля: " + _ship.Energy);
         }
 
+        /// <summary>
+        /// При взрыве астероида
+        /// </summary>
+        /// <param name="message"></param>
         public static void Hit(string message)
         {
             Console.WriteLine(DateTime.Now + " " + message + " Взорвали астероид: счет " + score);
             sw.WriteLine(DateTime.Now + " " + message + " Взорвали астероид: счет " + score);
         }
 
+        /// <summary>
+        /// Вызывается при ударе астероида о корабль
+        /// </summary>
+        /// <param name="message"></param>
         public static void ShipHit(string message)
         {
             Console.WriteLine(DateTime.Now + " В корабль попали энергия корабля: " + _ship.Energy);

@@ -25,12 +25,30 @@ namespace Lesson4_Collection_and_LINQ
             }
         }
 
-        private static IDictionary<T,int> GetUniques<T>(ICollection<T> list)
+        private static ICollection<T> GetUniques<T>(ICollection<T> list)
+        {
+            // Для отслеживания элементов используйте словарь 
+            Dictionary<T, bool> found = new Dictionary<T, bool>();
+            List<T> uniques = new List<T>();
+            // Этот алгоритм сохраняет оригинальный порядок элементов 
+            foreach (T val in list)
+            {
+                if (!found.ContainsKey(val))
+                {
+                    found[val] = true;
+                    uniques.Add(val);
+                }
+            }
+            return uniques;
+        }
+
+
+        private static IDictionary<T,int> GetCount<T>(ICollection<T> list)
         {
             // Для отслеживания элементов используйте словарь 
             Dictionary<T, int> found = new Dictionary<T, int>();
             //List<T> tlist = new List<T>();
-            foreach (T val in list)
+            foreach (T val in GetUniques(list))
             {
                 foreach (T val2 in list)
                     if (val.Equals(val2))
@@ -61,7 +79,7 @@ namespace Lesson4_Collection_and_LINQ
 
         public static void Show(List<int> ilist)
         {
-            foreach (int l in ilist)
+            foreach (var l in ilist)
             {
                 Console.Write(l + " ");
             }
@@ -82,9 +100,10 @@ namespace Lesson4_Collection_and_LINQ
             Console.WriteLine();
             Console.WriteLine("Количество повторений для целочисленной коллекции");
             Show(result);
+            
 
             Console.WriteLine("Количество повторений для обобщенной коллекции");
-            foreach (var pair in GetUniques(ilist))
+            foreach (var pair in GetCount(ilist))
             {
                 Console.WriteLine(pair.Key + " " + pair.Value);
             };
