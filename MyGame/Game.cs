@@ -8,6 +8,9 @@ using System.Drawing;
 
 namespace MyGame
 {
+    /// <summary>
+    /// Основной класс программы
+    /// </summary>
     static class Game
     {
         private static BufferedGraphicsContext _context;
@@ -21,12 +24,17 @@ namespace MyGame
         public static BaseObject[] _objs;
         public static Star[] _star;
         public static Sputnic s;
+        private static Bullet _bullet;
+        private static Asteroid[] _asteroids;
 
         static Game()
         {
         }
 
-        //Инициализация начального состояния формы для игры
+        /// <summary>
+        /// Инициализация начального состояния формы для игры
+        /// </summary>
+        /// <param name="form">Форма для отображения</param>
         public static void Init(Form form)
         {
             // Графическое устройство для вывода графики
@@ -35,11 +43,15 @@ namespace MyGame
             // Предоставляем доступ к главному буферу графического контекста для текущего приложения
             _context = BufferedGraphicsManager.Current;
             g = form.CreateGraphics();
-            
+
             // Создаем объект (поверхность рисования) и связываем его с формой
             // Запоминаем размеры формы
+
+            if (form.Width > 1000 || form.Width < 0 || form.Height > 1000 || form.Height < 0)
+                throw new ArgumentOutOfRangeException("Некорректный размер окна игры");
             Width = form.Width;
             Height = form.Height;
+
            
             // Связываем буфер в памяти с графическим объектом, чтобы рисовать в буфере
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
@@ -56,37 +68,50 @@ namespace MyGame
 
         }
 
+        /// <summary>
+        /// Очистка экрана
+        /// </summary>
         public static void Clear()
         {
             Buffer.Graphics.Clear(Color.FromArgb(0, 0, 64));
             Buffer.Render();
         }
 
+        /// <summary>
+        /// Загрузка начальных параметров объектов
+        /// </summary>
         public static void Load()
         {
             //По Х случайное появление точки
-            Random r = new Random();
+            Random rnd = new Random();
             int starSize;
             _objs = new BaseObject[5];
             _star = new Star[30];
 
-            //Создаем метеоры
-            for (int i = 0; i < _objs.Length; i++)
-                _objs[i] = new BaseObject(new Point(r.Next(0, 600), i * 20), new Point(-i-15, -i-15), new
-                Size(10, 10));
+            _bullet = new Bullet(new Point(0, 200), new Point(25, 0), new Size(4, 1));
+
+            _asteroids = new Asteroid[8];
+            for (var i = 0; i < _asteroids.Length; i++)
+            {
+                int r = rnd.Next(5, 30);
+                _asteroids[i] = new Asteroid(new Point(1000, rnd.Next(0, Game.Height)), new Point(-r / 5, r), new Size(40, 40));
+            }
 
             //Создаем звезды. Хотим что бы звезды имели случайный размер и место появления
             for (int i = 0; i < _star.Length; i++)
             {
-                starSize = r.Next(4, 10);
-                _star[i] = new Star(new Point(r.Next(0, 600), i * 20), new Point(i, 0), new Size(starSize, starSize));
+                starSize = rnd.Next(4, 10);
+                _star[i] = new Star(new Point(rnd.Next(0, 600), i * 20), new Point(i, 0), new Size(starSize, starSize));
             }
 
             //Создаем спутник
             s = new Sputnic(new Point(100, 100), new Point(10, 10), new Size(20, 20));
         }
 
-        //Метод для рисования массива объектов
+        /// <summary>
+        /// Метод для рисования массива объектов
+        /// </summary>
+        /// <param name="objs">Оюъекты для рисования</param>
         public static void Draw(BaseObject[] objs)
         {
             // Проверяем вывод графики
@@ -95,25 +120,46 @@ namespace MyGame
             Buffer.Render();
         }
 
-        // двигаем объекты
+        /// <summary>
+        /// двигаем объекты
+        /// </summary>
+        /// <param name="objs">Массив объектов</param>
         public static void Update(BaseObject[] objs)
         {
-            foreach (BaseObject obj in objs)
-                obj.Update();           
+            foreach (BaseObject obj in _asteroids)
+            {
+                obj.Update();
+                if (obj.Collision(_bullet))
+                {
+                    System.Media.SystemSounds.Hand.Play();
+                    obj.Pos.X = Game.Width;
+                    _bullet.Pos.X = 0;
+                }
+            }
+
+            foreach (BaseObject obj in _star)
+            {
+                obj.Update();
+            }
         }
 
         private static void Timer_Tick(object sender, EventArgs e)
         {
             Clear();
-            Draw(_objs);
+           
+            Draw(_asteroids);
             Draw(_star);
-            Update(_objs);
+            _bullet.Draw();
+            Update(_asteroids);
             Update(_star);
+            _bullet.Update();
             s.Draw();
             s.Update();
+            
         }
 
-        private static void Form1_FormClosing(object sender, FormClosingEventArgs e)
+
+    private static void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             //Если нужно чтобы форма не закрывалась:
             e.Cancel = false;

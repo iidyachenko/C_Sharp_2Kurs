@@ -23,7 +23,10 @@ namespace MyGame
         {
         }
 
-        //Инициализация начального состояния формы для игры
+        /// <summary>
+        /// Инициализация начального состояния формы для игры
+        /// </summary>
+        /// <param name="form">Форма для экрана меню</param>
         public static void Init(Form form)
         {
             // Графическое устройство для вывода графики
@@ -53,6 +56,9 @@ namespace MyGame
 
         }
 
+        /// <summary>
+        /// Загрузка стартовых параметров заставки
+        /// </summary>
         public static void Load()
         {
             //По Х случайное появление точки
@@ -69,6 +75,11 @@ namespace MyGame
             }
         }
 
+        /// <summary>
+        /// Таймер заставки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void Timer_Tick(object sender, EventArgs e)
         {
             Clear();
@@ -76,13 +87,19 @@ namespace MyGame
             Update(_objs);
         }
 
+        /// <summary>
+        /// Очищаем заставку
+        /// </summary>
         public static void Clear()
         {
             Buffer.Graphics.Clear(Color.FromArgb(0, 0, 64));
             Buffer.Render();
         }
 
-        //Метод для рисования массива объектов
+        /// <summary>
+        ///Метод для рисования массива объектов
+        /// </summary>
+        /// <param name="objs">массив объектов</param>
         public static void Draw(SplashBaseObject[] objs)
         {
             // Проверяем вывод графики
@@ -93,7 +110,10 @@ namespace MyGame
         }
 
 
-        // двигаем объекты
+        /// <summary>
+        /// двигаем объекты заставки
+        /// </summary>
+        /// <param name="objs">массив объектов</param>
         public static void Update(SplashBaseObject[] objs)
         {
             foreach (SplashBaseObject obj in objs)

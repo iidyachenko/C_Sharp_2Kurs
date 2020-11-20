@@ -9,17 +9,29 @@ namespace MyGame
 {
     class Star: BaseObject
     {
+        /// <summary>
+        /// Создания звезд
+        /// </summary>
+        /// <param name="pos">Позиция</param>
+        /// <param name="dir">Скорость</param>
+        /// <param name="size">размер</param>
         public Star(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
 
         }
 
+    /// <summary>
+    /// Отображения звезды
+    /// </summary>
         public override void Draw()
         {
             Game.Buffer.Graphics.DrawLine(Pens.Aqua, Pos.X, Pos.Y, Pos.X + Size.Width,Pos.Y + Size.Height);
             Game.Buffer.Graphics.DrawLine(Pens.Aqua, Pos.X + Size.Width, Pos.Y, Pos.X,Pos.Y + Size.Height);
         }
 
+        /// <summary>
+        /// Расчет траектории движения звезды
+        /// </summary>
         public override void Update()
         {
             Pos.X = Pos.X - Dir.X;
