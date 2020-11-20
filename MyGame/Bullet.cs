@@ -25,6 +25,7 @@ namespace MyGame
         public override void Draw()
         {
             Game.Buffer.Graphics.DrawRectangle(Pens.OrangeRed, Pos.X, Pos.Y, Size.Width, Size.Height);
+            
         }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace MyGame
         public override void Update()
         {
             Pos.X = Pos.X + Dir.X;
-            if (Pos.X > Game.Width) Pos.X = 0;
+            if (Pos.X > Game.Width) Game._log -= Game.Bullet_in_fly; ;
         }
 
     }

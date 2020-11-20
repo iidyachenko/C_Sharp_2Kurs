@@ -12,6 +12,7 @@ namespace MyGame
 {
     public partial class FormGame : Form
     {
+
         public FormGame()
         {
             FormClosing += FormGame_FormClosing;
@@ -20,9 +21,25 @@ namespace MyGame
 
         private void FormGame_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = MessageBox.Show("Хотите закрыть окно?", "Закрытие окна", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No;
+           /// e.Cancel = MessageBox.Show("Хотите закрыть окно?", "Закрытие окна", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No;
             if (e.Cancel == false)
-            { Environment.Exit(0); }
+            {
+
+                Game.Buffer.Dispose();
+                Game._timer.Stop();
+            }
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // FormGame
+            // 
+            this.ClientSize = new System.Drawing.Size(282, 253);
+            this.Name = "FormGame";
+            this.ResumeLayout(false);
+
         }
     }
 }
