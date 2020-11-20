@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,12 @@ namespace MyGame
 
                 Game.Buffer.Dispose();
                 Game._timer.Stop();
+                Game._timer.Tick -= Game.Timer_Tick;
+                Game.sw.Close();
+                Game.recW = new StreamWriter("Record.txt");
+                Game.recW.WriteLine(Game.CurRec);
+                Game.recW.Close();
+                
             }
         }
 
